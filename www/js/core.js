@@ -4,6 +4,11 @@
 //===================================================================
 
 var nickname = "nobody"
+
+s_connect = new Audio("../snd/c-call.ogg");
+s_message = new Audio("../snd/c-open.ogg");
+s_exit    = new Audio("../snd/c-cover.ogg");
+
 Webchat = {
 
     connect: function (host) {
@@ -21,11 +26,13 @@ Webchat = {
 
     wsopen: function () {
         console.log("connected");
-        Webchat.send("nickname",nickname)
+        Webchat.send("nickname",nickname);
+        s_connect.play();
     },
 
     wsclose: function () {
         console.log("disconnected")
+        s_exit.play();
     },
 
     wserror: function (e) {
@@ -34,13 +41,16 @@ Webchat = {
 
     wsmessage: function (e) {
         var x = JSON.parse(e.data);
+
         switch( x.Action )
         {
             case "inform":
+                s_connect.play();
                 Webchat.oninform(x.Data);
                 break;
 
             case "message":
+                s_message.play();
                 Webchat.onmessage(x.Origin, x.Data);
                 break;
         }
