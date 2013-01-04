@@ -52,7 +52,7 @@ Webchat = {
     //===================================================================
 
     compatible: function() {
-        return window.WebSocket;
+        return window.WebSocket && window.localStorage;
     },
 
     //===================================================================
@@ -71,7 +71,6 @@ Webchat = {
     //===================================================================
 
     load: function () {
-        console.log("not implemented");
         nickname = localStorage["nickname"]
         $('#settings-nickname').val(nickname)
     },
