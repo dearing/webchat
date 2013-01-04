@@ -3,6 +3,7 @@ package main
 import (
 	"code.google.com/p/go.net/websocket"
 	. "fmt"
+	"html/template"
 	"log"
 )
 
@@ -19,6 +20,9 @@ type ClientJSON struct {
 }
 
 func (client *Client) mesg(action, data string) *Message {
+	if config.EscapeData {
+		return &Message{Client: client, JSON: &ClientJSON{Action: action, Data: template.HTMLEscapeString(data), Origin: client.Nickname}}
+	}
 	return &Message{Client: client, JSON: &ClientJSON{Action: action, Data: data, Origin: client.Nickname}}
 }
 

@@ -14,6 +14,7 @@ type Config struct {
 	Tag            string
 	TLS            bool
 	Verbose        bool
+	EscapeData     bool
 }
 
 // Load up a JSON config file.
@@ -37,10 +38,11 @@ func (c *Config) GenerateConfig(path string) {
 		Certificate:    "cert.pem",
 		CertificateKey: "cert.key",
 		WWWHost:        ":9000",
-		WWWRoot:        "wwwroot",
+		WWWRoot:        "www",
 		Tag:            "/chat",
 		TLS:            false,
 		Verbose:        true,
+		EscapeData:     true,
 	}
 
 	b, _ := json.MarshalIndent(c, "", "\t")
