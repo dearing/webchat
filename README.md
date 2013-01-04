@@ -3,6 +3,8 @@ webchat
 
 go based websockets chats, served up in a bootstrap website
 
+![nothing fancy](https://raw.github.com/dearing/webchat/master/www/img/ss.png)
+
 build
 ----
 
