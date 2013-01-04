@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+    <title>Webchat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="shortcut icon" href="img/favicon.png">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+
+      }
+      html {height: 100%;}
+      #console-display{
+        overflow: auto;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+<body>
+  <!--nav -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="#">Webchat</a>
+          <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" id='profile-name'><i class="icon-user"></i> Username <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a data-toggle="modal" href="#settings">Settings</a></li>
+              <li class="divider"></li>
+              <li><a id='ux-reconnect' href="#" onclick='$("#console-display").html("")'>Clear</a></li>
+              <li><a id='ux-reconnect' href="#">Reconnect</a></li>
+              <li><a id='ux-disconnect' href="#">Disconnect</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- container -->
+
+    <div class='container-fluid'>
+      <div class='row-fluid'>
+        <div id='console-display' class='span12'><!--console--></div>
+      </div>
+      <div class='row-fluid'>
+        <div id='console-input-area' class='span12'><input id='console-input' class='span10' type=text></input></div>
+      </div>
+
+    </div>
+
+    <!-- modal -->
+    <!-- Button to trigger modal -->
+    
+
+        <div id="settings" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Settings</h3>
+      </div>
+      <div class="modal-body">
+        <p>Locally stored information.</p>
+        Nickname: <input id='settings-nickname'></input>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn btn-primary" onclick="Webchat.save()">Save changes</button>
+      </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/core.js"></script>
+    <script>
+    var input = document.getElementById("console-input");
+    var con   = document.getElementById("console-display");
+
+      console.log(Webchat)
+
+
+    $(document).ready(function(){ $('#console-display').height($(window).height() -  150);});
+  
+    $(window).resize(function() {
+          $(document).ready(function(){ $('#console-display').height($(window).height() - 150);});
+    });
+
+      if(Webchat.compatible()) {
+        Webchat.load();
+        $('#profile-name').html(nickname);
+        Webchat.connect("ws://127.0.0.1:9000/chat");
+
+         input.onkeyup    = function (e)    {if(e.keyCode == 13) {Webchat.send("message", input.value); input.value = ""}}
+        Webchat.oninform   = function (d)    {con.innerHTML += "<p class='muted'>"+d+"</p>"; con.scrollTop += 9999};
+        Webchat.onmessage  = function (o, d) {con.innerHTML += "<p><span class='text-info'>"+o + "</span>: "+d+"</p>"; con.scrollTop += 9999};
+      }
+
+    </script>
+</body>
+</html>
